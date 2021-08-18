@@ -1,7 +1,7 @@
 import {
-  AddTodoListActionCreator,
-  ChangeTodoListActionCreator, ChangeTodoListFilterActionCreator,
-  RemoveTodoListActionCreator,
+  AddTodoListAC,
+  ChangeTodoListAC, ChangeTodoListFilterAC,
+  RemoveTodoListAC,
   todoListsReducer
 } from "./todolists-reducer";
 import {v1} from 'uuid';
@@ -16,7 +16,7 @@ test('correct todolist should be removed', () => {
     {id: todolistId2, title: "What to buy", filter: "all"}
   ]
   
-  const endState = todoListsReducer(startState, RemoveTodoListActionCreator(todolistId1))
+  const endState = todoListsReducer(startState, RemoveTodoListAC(todolistId1))
   
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
@@ -34,7 +34,7 @@ test('correct todolist should be added', () => {
     {id: todolistId2, title: "What to buy", filter: "all"}
   ]
   
-  const endState = todoListsReducer(startState, AddTodoListActionCreator(newTodolistTitle))
+  const endState = todoListsReducer(startState, AddTodoListAC(newTodolistTitle))
   
   expect(endState.length).toBe(3);
   expect(endState[2].title).toBe(newTodolistTitle);
@@ -52,7 +52,7 @@ test('correct todolist should change its name', () => {
     {id: todolistId2, title: "What to buy", filter: "all"}
   ]
   
-  const action = ChangeTodoListActionCreator(newTodolistTitle, todolistId2)
+  const action = ChangeTodoListAC(newTodolistTitle, todolistId2)
   
   const endState: Array<TodoListType> = todoListsReducer(startState, action);
   
@@ -72,7 +72,7 @@ test('correct filter of todolist should be changed', () => {
     {id: todolistId2, title: "What to buy", filter: "all"}
   ]
   
-  const action = ChangeTodoListFilterActionCreator(newFilter, todolistId2);
+  const action = ChangeTodoListFilterAC(newFilter, todolistId2);
   
   const endState: Array<TodoListType> = todoListsReducer(startState, action);
   

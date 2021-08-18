@@ -35,14 +35,16 @@ export function getTriangleType(a: number,b: number,c: number): string {
 // 3. Функция getSum принимает параметром целое число и возвращает
 // сумму цифр этого числа
 
-export function getSum(number: number): number{
-    //...здесь пишем код.
+export function getSum(number: number): number {
+    // ...здесь пишем код.
     // В return стоит "заглушка", чтоб typescript не ругался
     // let str = number + '';
     // let arr = str.split('');
-    let arr = number.String().split();
-    
-    return arr.reduce((acc, item) => acc + item);
+    // let arr = number.String().split();
+
+    // return arr.reduce((acc, item) => acc + item);
+    return(number.toString().split(''))
+        .reduce((acc, el) => acc + Number(el), 0);
 }
 
 
