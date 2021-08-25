@@ -4,6 +4,9 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {AppRootStateType} from "./store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {TodoListType} from "./AppWithRedux";
 
 type TodoListPropsType = {
   id: string
@@ -26,7 +29,8 @@ export type TaskType = {
 }
 
 const TodoList = (props: TodoListPropsType) => {
-  
+  const todo = useSelector<AppRootStateType, TodoListType>(state => state.todolists.filter(todo => todo.id === props.id[0]));
+  const dispatch = useDispatch();
   const tasksJSXElements = props.tasks.map(t => {
     const removeTask = () => props.removeTask(t.id, props.id)
     const changeTaskStatus = (event: ChangeEvent<HTMLInputElement>) =>

@@ -1,10 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import AppWithReducer from "./AppWithreducer";
+import AppWithRedux, {TodoListType} from "./AppWithRedux";
+import {Provider, useDispatch, useSelector} from "react-redux";
+import {AppRootStateType, store} from "./store/store";
+import {TaskType} from "./TodoList";
 
-ReactDOM.render(<App />,  document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <AppWithRedux/>
+  </Provider>, document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
