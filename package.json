@@ -22,6 +22,7 @@
     "react-redux": "^7.2.5",
     "react-scripts": "4.0.3",
     "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"
@@ -59,5 +60,8 @@
     "@storybook/node-logger": "^6.1.15",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.15"
+  },
+  "resolutions": {
+    "@storybook/addon-actions/**/@emotion/sheet": "^1.0.1"
   }
 }
