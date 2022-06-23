@@ -6,7 +6,7 @@ const instance = axios.create({
     headers: {
         'API-KEY': '968a1a28-eb55-43a7-89bc-ff44bc6685f0'
     }
-})
+});
 
 // api
 export const todolistsAPI = {
@@ -34,28 +34,39 @@ export const todolistsAPI = {
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
     }
-}
+};
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        return instance.post<{data: LoginParamsType}, AxiosResponse<ResponseType<{userId?: number}>>>('auth/login', {data});
-    },
-    me() {
-        return instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me');
+        return instance.post<LoginParamsType, AxiosResponse<ResponseType<{userId?: number}>>>('auth/login', data);
     },
     logout() {
-        return instance.delete<ResponseType<{userId?: number}>>('auth/me');
+        return instance.delete<ResponseType<{userId?: number}>>('auth/login');
+    },
+    me() {
+        return instance.get<ResponseType<AuthMeType>>('auth/me');
     }
-}
+};
 
 
 // types
+export type FormikErrorType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+}
+
+export type LoginParamsType = FormikErrorType & {
+    captcha?: string
+}
+
 export type TodolistType = {
     id: string
     title: string
     addedDate: string
     order: number
 }
+
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
@@ -63,11 +74,10 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-export type LoginParamsType = {
+export type AuthMeType = {
+    id: number
     email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
+    login: string
 }
 
 export enum TaskStatuses {
@@ -97,6 +107,7 @@ export type TaskType = {
     order: number
     addedDate: string
 }
+
 export type UpdateTaskModelType = {
     title: string
     description: string
@@ -105,6 +116,7 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
+
 type GetTasksResponse = {
     error: string | null
     totalCount: number

@@ -10,18 +10,13 @@ import Button from "@mui/material/Button";
 import {useFormik} from "formik";
 import {loginTC} from "./auth-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {AppRootStateType} from "../../app/store";
-
-type FormikErrorType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
-
+import {FormikErrorType} from "../../api/todolists-api";
 
 export const Login = () => {
     const dispatch = useDispatch();
+    const {isLoggedIn} = useSelector((state: AppRootStateType) => state.auth);
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -29,12 +24,20 @@ export const Login = () => {
             rememberMe: false
         },
         validate: (values) => {
-            const errors: FormikErrorType = {};
+            const errors: Partial<FormikErrorType> = {};
+
             if (!values.email) {
                 errors.email = 'Required';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
+
+            if (!values.password) {
+                errors.password = 'Required';
+            } else if (values.password.length < 3) {
+                errors.password = 'Must be more 3 characters';
+            }
+
             return errors;
         },
     
@@ -42,22 +45,15 @@ export const Login = () => {
             dispatch(loginTC(values));
             formik.resetForm();
         },
-    })
-    
-    
-    //if from redux
-    // formik.setFieldValue("email", "sdfsd");
-    
-    const {isLoggedIn} = useSelector((state: AppRootStateType) => state.auth);
-    const n = useNavigate()
-    if (isLoggedIn) n('/');
+    });
+
+    if (isLoggedIn) {
+        return <Navigate to="/"/>
+    }
     
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
-            <form onSubmit={(e) => {
-                formik.handleSubmit(e)
-                formik.resetForm()
-            }}>
+            <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
                         <p>To log in get registered
@@ -70,8 +66,7 @@ export const Login = () => {
                         <p>Password: free</p>
                     </FormLabel>
                     <FormGroup>
-                        <TextField label="Email"
-                                   margin="normal"
+                        <TextField label="Email" margin="normal"
                                    {...formik.getFieldProps("email")}
                                    error={!!formik.errors.email && formik.touched.email}
                                    helperText={formik.touched.email ? formik.errors.email: null}
@@ -84,11 +79,7 @@ export const Login = () => {
                                    value={formik.values.password}
                         />
                         <FormControlLabel label={'Remember me'} control={
-                            <Checkbox
-                                name="rememberMe"
-                                onChange={formik.handleChange}
-                                checked={formik.values.rememberMe}
-                            />
+                            <Checkbox {...formik.getFieldProps("rememberMe")}/>
                         }/>
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
@@ -99,4 +90,4 @@ export const Login = () => {
             
         </Grid>
     </Grid>
-}
+};

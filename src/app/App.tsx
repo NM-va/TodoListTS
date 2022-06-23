@@ -15,7 +15,7 @@ import {Menu} from "@mui/icons-material";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar"
-import {Route, Routes} from "react-router-dom"
+import {Navigate, Route, Routes} from "react-router-dom"
 import {Login} from "../features/Login/Login";
 import {logoutTC} from "../features/Login/auth-reducer"
 
@@ -32,13 +32,13 @@ function App({demo = false}: PropsType) {
     
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])
-    
-    const logoutHandler = useCallback(() => {
-        dispatch(logoutTC())
     }, []);
     
-    if(!isInitialized) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
+    const handleLogout = useCallback(() => {
+        dispatch(logoutTC());
+    }, []);
+    
+    if (!isInitialized) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>;
 
     
     return (
@@ -52,16 +52,17 @@ function App({demo = false}: PropsType) {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={handleLogout}>Logout</Button>}
                 </Toolbar>
                 {status === 'loading'
                 && <LinearProgress onClick={() => dispatch(logoutTC())}/>}
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path={"/login"} element={<Login />}/>
                     <Route path={"/"} element={<TodolistsList demo={demo}/>} />
-                    <Route path={"/*"} element={<div>404</div>}/>
+                    <Route path={"/login"} element={<Login />}/>
+                    <Route path={"404"} element={<h1>Page not found</h1>}/>
+                    <Route path={"*"} element={<Navigate to={"/404"}/>}/>
                 </Routes>
             </Container>
         </div>
