@@ -8,10 +8,9 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm = React.memo(function({addItem, disabled = false}: AddItemFormPropsType) {
-    console.log("AddItemForm called")
 
-    let [title, setTitle] = useState("")
-    let [error, setError] = useState<string | null>(null)
+    let [title, setTitle] = useState("");
+    let [error, setError] = useState<string | null>(null);
 
     const addItemHandler = () => {
         if (title.trim() !== "") {
@@ -20,11 +19,11 @@ export const AddItemForm = React.memo(function({addItem, disabled = false}: AddI
         } else {
             setError("Title is required");
         }
-    }
+    };
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-    }
+    };
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (error !== null) {
@@ -33,7 +32,7 @@ export const AddItemForm = React.memo(function({addItem, disabled = false}: AddI
         if (e.charCode === 13) {
             addItemHandler();
         }
-    }
+    };
 
     return <div>
         <TextField variant="outlined"
@@ -49,4 +48,4 @@ export const AddItemForm = React.memo(function({addItem, disabled = false}: AddI
             <AddBox />
         </IconButton>
     </div>
-})
+});
