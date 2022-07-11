@@ -3,13 +3,13 @@ import axios from 'axios'
 const settings = {
     withCredentials: true,
     headers: {
-        'API-KEY': '1cdd9f77-c60e-4af5-b194-659e4ebd5d41'
+        'API-KEY': '3c15bc86-8546-4613-ae33-ca725730696c'
     }
-}
+};
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings
-})
+});
 
 // api
 export const todolistsAPI = {
@@ -41,7 +41,7 @@ export const todolistsAPI = {
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
     }
-}
+};
 
 
 export type LoginParamsType = {
@@ -73,9 +73,11 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
+export type FieldErrorType = { field: string, error: string };
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
 export enum TaskStatuses {
